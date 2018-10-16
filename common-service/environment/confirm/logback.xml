@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- slf4j日志配置文件 -->
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+    <contextName>${HOSTNAME}</contextName>
+    <!-- 设置日志输出根目录 -->
+    <property name="log.dir" value="log"/>
+
+    <property name="encoding" value="UTF-8"/>
+    <property name="normal-pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level - [%thread] - [%logger %M:%L] - [%X{traceId}] %msg%n"/>
+    <property name="plain-pattern" value="%d{yyyy-MM-dd.HH:mm:ss} %msg%n"/>
+    <property name="nmq-pattern" value="%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level - [%thread] - [%logger %M:%L] - [%X{traceId}] %msg%n"/>
+
+    <!-- log file default -->
+    <appender name="main"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.dir}/main.log</File>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${normal-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.dir}/main.log.%d{yyyy-MM-dd-HH}
+            </fileNamePattern>
+            <maxHistory>24</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- log file error -->
+    <appender name="error"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${normal-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.dir}/error.log.%d{yyyy-MM-dd-HH}
+            </fileNamePattern>
+            <maxHistory>24</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- log file client -->
+    <appender name="clientAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.dir}/client/client.log</File>
+        <prudent>false</prudent>
+        <Append>true</Append>
+        <encoder>
+            <pattern>${normal-pattern}</pattern>
+            <charset>${encoding}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.dir}/client/client.log.%d{yyyy-MM-dd-HH}
+            </fileNamePattern>
+            <maxHistory>24</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${normal-pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="traceAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.dir}/trace/trace.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/trace/trace.log.%d{yyyy-MM-dd-HH}</FileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%m%n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="traceLogger" level="info" additivity="false">
+        <appender-ref ref="traceAppender" />
+    </logger>
+
+    <!-- 行情分发器的日志start -->
+    <appender name="clientCommunicationAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.dir}/quote/clientCommunication.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/quote/clientCommunication.log.%d{yyyy-MM-dd-HH}</FileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d %-5p - %logger - [%t] [%file:%line] - %m%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="clientValidQuotationAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.dir}/clientValidQuotation.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/clientValidQuotation.log.%d{yyyy-MM-dd-HH}</FileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%m%n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="clientCommunication.log" level="info" additivity="false">
+        <appender-ref ref="clientCommunicationAppender" />
+        <appender-ref ref="stdout" />
+    </logger>
+    <logger name="clientValidQuotation.log" level="info" additivity="false">
+        <appender-ref ref="clientValidQuotationAppender" />
+    </logger>
+    <!-- 行情分发器的日志end -->
+
+    <logger name="clientLogger" level="INFO" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="clientAppender"/>
+    </logger>
+
+    <!-- 顺序消息日志 -->
+    <appender name="nmqSeqAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.dir}/nmq/seq.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/nmq/seq.log.%d{yyyy-MM-dd-HH}</FileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${nmq-pattern}</pattern>
+        </layout>
+    </appender>
+
+    <logger name="nmqSeqLogger" level="info" additivity="false">
+        <appender-ref ref="nmqSeqAppender"/>
+    </logger>
+
+    <!-- 普通消息日志 -->
+    <appender name="nmqNormalAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.dir}/nmq/normal.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/nmq/normal.log.%d{yyyy-MM-dd-HH}</FileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${nmq-pattern}</pattern>
+        </layout>
+    </appender>
+
+    <logger name="nmqNormalLogger" level="info" additivity="false">
+        <appender-ref ref="nmqNormalAppender"/>
+    </logger>
+
+    <!-- 延迟消息日志 -->
+    <appender name="nmqDelayAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.dir}/nmq/delay.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/nmq/delay.log.%d{yyyy-MM-dd-HH}</FileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${nmq-pattern}</pattern>
+        </layout>
+    </appender>
+
+    <logger name="nmqDelayLogger" level="info" additivity="false">
+        <appender-ref ref="nmqDelayAppender"/>
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="console"/>
+        <appender-ref ref="main"/>
+        <appender-ref ref="error"/>
+    </root>
+
+</configuration>
