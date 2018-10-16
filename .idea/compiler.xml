@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="common-service" />
         <module name="common-utils" />
         <module name="DistributedSite" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="common-service" target="1.7" />
       <module name="common-utils" target="1.7" />
       <module name="commonutils" target="1.5" />
       <module name="DistributedSite" target="1.5" />
