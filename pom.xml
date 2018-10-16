@@ -6,7 +6,11 @@
 
     <groupId>cn.cugb</groupId>
     <artifactId>common-parent</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>common-utils</module>
+    </modules>
 
 
 </project>
