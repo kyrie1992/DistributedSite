@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -27,4 +29,6 @@ public class AppTest
         int count = iCalCulateStudentService.calculateAllStudentAges().size();
         assertTrue( "结果正确" ,count==1);
     }
+
+
 }
