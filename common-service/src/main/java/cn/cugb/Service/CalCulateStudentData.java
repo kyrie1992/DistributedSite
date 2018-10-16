@@ -18,7 +18,7 @@ public class CalCulateStudentData implements ICalCulateStudentService {
     public List<Student> calculateAllStudentAges() {
         List<Student> resultList = new ArrayList<>();
         Student student = new Student();
-        student.setAddress(STUNAME);
+        student.setName(STUNAME);
         student.setAddress(ADDRESS);
         resultList.add(student);
         return resultList;
