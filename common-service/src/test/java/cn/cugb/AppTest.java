@@ -23,7 +23,7 @@ public class AppTest
     public void shouldAnswerWithTrue()
     {
         BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
-        ICalCulateStudentService iCalCulateStudentService = (CalCulateStudentData)factory.getBean("calCulateStudentData");
+        ICalCulateStudentService iCalCulateStudentService = (ICalCulateStudentService)factory.getBean("dubboConsumerTest");
         Student student = iCalCulateStudentService.calculateAllStudentAges().get(0);
         System.err.println(student.getName()+student.getAddress());
         int count = iCalCulateStudentService.calculateAllStudentAges().size();
